@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <div th:replace="/fragment/header.html :: header-config('글 작성')"></div>
+    <div th:replace="/fragment/header.html :: summernote-config"></div>
+    <style>
+        .container {
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="/fragment/nav-bar.html :: nav-bar"></div>
+<div class="container">
+    <form class="mt-5">
+        <div class="form-group">
+            <label for="title" th:text="#{label.post.title}">제목</label>
+            <input type="text" name="title" id="title" class="form-control"
+                   placeholder="제목" required="required"/>
+        </div>
+        <div class="form-group">
+            <label for="content" th:text="#{label.post.content}">내용</label>
+            <textarea id="content" class="form-control"></textarea>
+        </div>
+    </form>
+    <div>
+        <button id="btn-save" class="btn btn-primary">작성 완료</button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#content').summernote({
+            height: 300,
+            minHeight: null,
+            maxHeight: null,
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
+                    for (let i = 0; i < files.length; i++) {
+                        sendFile(files[i], this);
+                    }
+                },
+                onMediaDelete : function (target) {
+                    // alert(target[0].src);
+                    deleteFile(target[0].src);
+                }
+            }
+        });
+    });
+</script>
+<script th:src="@{/js/posts.js}"></script>
+<script th:src="@{/js/errorField.js}"></script>
+</body>
+</html>

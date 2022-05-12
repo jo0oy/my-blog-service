@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragment/header.html :: header-config('MyBlog')"></div>
+    <div th:replace="/fragment/header.html :: summernote-config"></div>
+    <div th:replace="/fragment/header.html :: datepicker"></div>
+    <style>
+        .container {
+            max-width: 700px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="/fragment/nav-bar.html :: nav-bar"></div>
+<div class="container mt-5">
+    <h3 class="mt-2 mb-4 font-italic text-center">
+        'MyBlog'의 다양한 글들을 확인해보세요. :)
+    </h3>
+    <form th:action="@{/posts}" method="get">
+    <div class="container d-flex">
+        <div class="row mt-4">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">시작일</span>
+                        </div>
+                        <input type="text" name="startDate" data-format="yyyy-MM-dd" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">종료일</span>
+                        </div>
+                        <input type="text" name="endDate" data-format="yyyy-MM-dd" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="input-group date" id="author" data-target-input="nearest">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">작성자</span>
+                        </div>
+                        <input type="text" name="author" class="form-control datetimepicker-input" placeholder="작성자"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="input-group date" id="title" data-target-input="nearest">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">제목</span>
+                        </div>
+                        <input type="text" name="title" class="form-control datetimepicker-input" placeholder="제목"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <button type="submit" class="btn btn-primary">검색</button>
+            </div>
+        </div>
+    </div>
+    </form>
+    <div class="card m-3" th:each="post: ${list}">
+        <div class="card-body">
+          <h4 class="card-title" th:text="${post.title}"></h4>
+            <a href="post.html" th:href="@{/posts/{username}/{postId}(username=${post.author}, postId=${post.postId})}"
+               class="btn btn-link btn-sm">상세보기</a>
+        </div>
+    </div>
+</div>
+<nav aria-label="Page navigation example">
+    <!--표에 사용될 변수값 초기화 -->
+    <ul class="pagination justify-content-center"
+        th:with="start=${T(Math).floor(list.number/10)*10 + 1},
+                    last=(${(T(Math).floor(list.number/10)*10 + 1) + 9 < list.totalPages
+                                ? (T(Math).floor(list.number/10)*10 + 1) + 9 : list.totalPages})">
+        <th:block th:with="
+                firstAddr=@{/posts(page=1)},
+                prevAddr=@{/posts(page=${list.number})},
+                nextAddr=@{/posts(page=${list.number + 2})},
+                lastAddr=@{/posts(page=${list.totalPages})}">
+            <li class="page-item">
+                <a class="page-link" th:href="${firstAddr}" aria-label="First">
+                    <span aria-hidden="true">First</span>
+                </a>
+            </li>
+            <!-- 이전 페이지로 가기 버튼 -->
+            <li class="page-item" th:classappend="${list.first} ? 'disabled'">
+                <a class="page-link" th:href="${list.first} ? '#' :${prevAddr}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+            <!--1,2,3,4,.. 등 페이지-->
+            <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}"
+                th:classappend="${page == list.number + 1} ? 'active'">
+                <a class="page-link" th:text="${page}" th:href="@{/posts(page=${page})}"></a>
+            </li>
+            <!--다음 페이지로 -->
+            <li class="page-item" th:classappend="${list.last} ? 'disabled'">
+                <a class="page-link" th:href="${list.last} ? '#' : ${nextAddr}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            <!--맨 마지막 페이지로 이동 -->
+            <li class="page-item">
+                <a class="page-link" th:href="${lastAddr}" aria-label="Last">
+                    <span aria-hidden="true">Last</span>
+                </a>
+            </li>
+        </th:block>
+    </ul>
+</nav>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'L',
+            useCurrent: false,
+            maxDate: new Date()
+        });
+
+        $('#datetimepicker2').datetimepicker({
+            format: 'L',
+            useCurrent: false,
+            maxDate: new Date()
+        });
+
+        $('#datetimepicker1').on('change.datetimepicker', function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+        });
+
+        $('#datetimepicker2').on('change.datetimepicker', function (e) {
+            $('#datetimepicker1').datetimepicker('maxDate', e.date);
+        });
+
+
+    });
+</script>
+<script th:src="@{/js/posts.js}"></script>
+<script th:src="@{/js/errorField.js}"></script>
+</body>
+</html>

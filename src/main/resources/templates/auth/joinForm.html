@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <div th:replace="/fragment/header.html :: header-config('회원가입')"></div>
+    <div th:replace="/fragment/header.html :: summernote-config"></div>
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="/fragment/nav-bar.html :: nav-bar"></div>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2 class="font-weight-bold" th:text="#{page.joinForm}">회원 가입</h2>
+    </div>
+    <h4 class="mb-3">회원 정보 입력</h4>
+    <form>
+        <div id="globalError"></div>
+        <div class="form-group">
+            <label for="username" th:text="#{label.member.username}">로그인 ID</label>
+            <input type="text" id="username" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="password" th:text="#{label.member.password}">비밀번호</label>
+            <input type="password" id="password" class="form-control" >
+        </div>
+        <div class="form-group">
+            <label for="name" th:text="#{label.member.name}">이름</label>
+            <input type="text" id="name"class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="email" th:text="#{label.member.email}">이메일</label>
+            <input type="text" id="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber" th:text="#{label.member.phoneNumber}">전화번호</label>
+            <input type="text" id="phoneNumber" placeholder="'-' 포함해서 입력" class="form-control">
+        </div>
+    </form>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col">
+            <button id="btn-save" class="w-100 btn btn-primary btn-lg">회원 가입</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='index.html'"
+                    th:onclick="|location.href='@{/}'|"
+                    type="button">취소</button>
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:src="@{/js/member.js}"></script>
+<script th:src="@{/js/errorField.js}"></script>
+</body>
+</html>

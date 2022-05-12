@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragment/header.html :: header-config('글 상세보기')"></div>
+    <div th:replace="/fragment/header.html :: summernote-config"></div>
+    <style>
+        .container {
+            max-width: 650px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="/fragment/nav-bar.html :: nav-bar"></div>
+<div class="container mt-5">
+    <div class="py-4 d-flex">
+        <button class="btn btn-sm btn-secondary"
+                    onclick="location.href='postList.html'"
+                    th:onclick="|location.href='@{/posts}'|"
+                    type="button" th:text="#{button.cancel}">목록으로</button>
+        <button class="btn btn-sm btn-info" style="margin-left: 4px"
+                    onclick="location.href='editPost.html'"
+                    th:onclick="|location.href='@{/posts/{postId}/edit(postId=${post.postId})}'|"
+                    type="button" th:text="#{page.editPost}">글 수정</button>
+        <button class="btn btn-sm btn-warning" style="margin-left: 4px"
+                    type="button" th:text="#{button.delete}">삭제</button>
+    </div>
+
+    <div>
+        <h3 th:text="${post.title}">제목</h3>
+        <br>
+        <div>
+            작성일 : <span style="font-style: italic;" th:text="${#temporals.format(post.createdDate,'dd-MM-yyyy HH:mm:ss')}">작성일</span>&nbsp;&nbsp;
+            최종 수정일 : <span style="font-style: italic;" th:text="${#temporals.format(post.lastModifiedDate,'dd-MM-yyyy HH:mm:ss')}">최종 수정일</span>
+        </div>
+        <div>
+            작성자 : <span style="font-style: italic;" th:text="${post.author}">작성자</span>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div>
+        <div th:utext="${post.content}">글 내용</div>
+    </div>
+
+    <hr class="my-4">
+    <div class="card">
+        <div class="card-body">
+            <textarea class="form-control" rows="1"></textarea>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary">등록</button>
+        </div>
+    </div>
+
+    <br>
+    <div class="card">
+        <div class="card-header">댓글 리스트</div>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between">
+                <div> 댓글 내용입니다!! </div>
+                <div class="d-flex">
+                    <div class="font-italic">작성자 : 작성자 &nbsp;</div>
+                    <button class="badge">삭제</button>
+                </div>
+            </li>
+            <li class="list-group-item">Second item</li>
+            <li class="list-group-item">Third item</li>
+        </ul>
+    </div>
+
+</div><!-- /container -->
+<!-- Footer -->
+<!--<footer class="text-center text-lg-start bg-light text-muted">-->
+
+<!--    &lt;!&ndash; Section: Links  &ndash;&gt;-->
+<!--    <div class="container text-center py-1">-->
+<!--        <div class="mt-3">-->
+<!--            &lt;!&ndash; Links &ndash;&gt;-->
+<!--            <h6 class="text-uppercase fw-bold mb-4">-->
+<!--                MyBlog-->
+<!--            </h6>-->
+<!--            <p><i class="bi bi-building"></i> New York, NY 10012, US</p>-->
+<!--            <p>-->
+<!--                <i class="bi bi-envelope"></i> info@example.com-->
+<!--            </p>-->
+<!--            <p><i class="bi bi-telephone"></i> + 01 234 567 88</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
+<!--    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">-->
+<!--        © Copyright:-->
+<!--        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MyBlog.com</a>-->
+<!--        , All rights reserved.-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Copyright &ndash;&gt;-->
+<!--</footer>-->
+<!--&lt;!&ndash; Footer &ndash;&gt;-->
+</body>
+</html>

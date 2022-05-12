@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragment/header.html :: header-config('My Blog Home')"></div>
+</head>
+<body>
+<div th:replace="/fragment/nav-bar.html :: nav-bar"></div>
+<br>
+
+<div class="container">
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="mb-4 fw-light">HELLO BLOG</h1>
+                <p class="lead text-muted"> Welcome to 'My Blog'! </p>
+                <p class="lead text-muted"> Enjoy your life with 'My Blog':) </p>
+                <p>
+                    <a th:href="@{/posts}" class="btn btn-primary my-2">전체 게시글</a>
+                    <a th:href="@{/myblog}" class="btn btn-secondary my-2">MyBlog</a>
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
